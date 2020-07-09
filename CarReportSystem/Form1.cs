@@ -60,10 +60,37 @@ namespace CarReportSystem
                 Picture = pbImage.Image
             };
 
+            //記録者をコンボボックスの入力候補に登録
+            setComboBoxName(cbAuthor.Text);
+
+            //車名をコンボボックスの入力候補に登録
+            setComboBoxCarName(cbName.Text);
+
             Reports.Insert(0,obj);
 
             inputItemAllClear();
 
+            Button_Check();
+        }
+
+        //記録者のコンボボックス入力候補
+        private void setComboBoxName(string Name)
+        {
+            if (!cbAuthor.Items.Contains(Name))
+            {
+                //コンボボックスの候補に追加
+                cbAuthor.Items.Add(Name);
+            }
+        }
+
+        //車名のコンボボックス入力候補
+        private void setComboBoxCarName(string CarName)
+        {
+            if (!cbName.Items.Contains(CarName))
+            {
+                //コンボボックスの候補に追加
+                cbName.Items.Add(CarName);
+            }
         }
 
         //謬力項目をクリア
@@ -119,6 +146,9 @@ namespace CarReportSystem
 
             dgvPerson.Refresh();
 
+            Button_Check();
+
+            inputItemAllClear();
         }
 
         private void btDelete2_Click(object sender, EventArgs e)
@@ -128,6 +158,8 @@ namespace CarReportSystem
             {
                 this.dgvPerson.Rows.Remove(row);
             }
+
+            Button_Check();
         }
 
         //終了
@@ -155,7 +187,6 @@ namespace CarReportSystem
                         throw;
                     }
                 }
-
             }
         }
 
@@ -233,6 +264,99 @@ namespace CarReportSystem
                         break;
                     }
             }
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            btModify.Enabled = false;
+            btDelete2.Enabled = false;
+        }
+
+        private void Button_Check()
+        {
+            if(Reports.Count == 0)
+            {
+                btModify.Enabled = false;
+                btDelete2.Enabled = false;
+            }
+            else
+            {
+                btModify.Enabled = true;
+                btDelete2.Enabled = true;
+            }
+        }
+
+        //ミス
+        private void dgvCarReportDate_Click(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void 終了ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void 新規作成ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            inputItemAllClear();
+            Reports.Clear();
+        }
+
+        private void 開くToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (ofdOpenDate.ShowDialog() == DialogResult.OK)
+            {
+                using (FileStream fs = new FileStream(ofdOpenDate.FileName, FileMode.Open))
+                {
+                    try
+                    {
+                        BinaryFormatter formatter = new BinaryFormatter();
+                        //逆シリアル化して読み込む
+                        Reports = (BindingList<CarReprot>)formatter.Deserialize(fs);
+                        //データグリッドビューに再設定
+                        dgvPerson.DataSource = Reports;
+                        ////選択されている箇所を各コントロールへ表示
+                        //dgvCarReportDate_Click(sender, e);
+                    }
+                    catch (SerializationException se)
+                    {
+                        Console.WriteLine("Failed to deserialize. Reason: " + se.Message);
+                        throw;
+                    }
+                }
+            }
+        }
+
+        private void 名前を付けて保存ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (sfdSaveDate.ShowDialog() == DialogResult.OK)
+            {
+                BinaryFormatter formatter = new BinaryFormatter();
+
+                using (FileStream fs = new FileStream(sfdSaveDate.FileName, FileMode.Create))
+                {
+                    try
+                    {
+                        formatter.Serialize(fs, Reports);
+                    }
+                    catch (SerializationException se)
+                    {
+                        Console.WriteLine("Faile to serialize. Reason" + se.Message);
+                        throw;
+                    }
+                }
+            }
+        }
+
+        private void すべて保存ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            
+        }
+
+        //ミス
+        private void cbAuthor_SelectedIndexChanged(object sender, EventArgs e)
+        {
 
         }
     }
