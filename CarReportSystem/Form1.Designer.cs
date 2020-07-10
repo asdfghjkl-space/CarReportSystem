@@ -352,7 +352,6 @@
             this.gbMaker.Size = new System.Drawing.Size(375, 53);
             this.gbMaker.TabIndex = 29;
             this.gbMaker.TabStop = false;
-            this.gbMaker.Text = "groupBox1";
             // 
             // ofdOpenImage
             // 
@@ -452,7 +451,7 @@
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "CarReportSystem";
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvPerson)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbImage)).EndInit();

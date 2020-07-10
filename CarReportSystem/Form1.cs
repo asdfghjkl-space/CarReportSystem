@@ -66,8 +66,10 @@ namespace CarReportSystem
             //車名をコンボボックスの入力候補に登録
             setComboBoxCarName(cbName.Text);
 
+            //リストの先頭に追加
             Reports.Insert(0,obj);
 
+            //次の入力に備えて各項目をクリア
             inputItemAllClear();
 
             Button_Check();
@@ -93,7 +95,7 @@ namespace CarReportSystem
             }
         }
 
-        //謬力項目をクリア
+        //各項目をクリア
         private void inputItemAllClear()
         {
             cbAuthor.Text = "";
@@ -127,6 +129,15 @@ namespace CarReportSystem
         //画像のClear
         private void btDelete1_Click(object sender, EventArgs e)
         {
+            if(pbImage.Image == null)
+            {
+                //メッセージボックスの追加
+                MessageBox.Show("画像が存在しませんので、削除できません。");
+                return;
+            }
+
+
+
             //ボタンを押したら、画像をクリア
             pbImage.Image = null;
         }
@@ -272,6 +283,7 @@ namespace CarReportSystem
             btDelete2.Enabled = false;
         }
 
+        //ボタンのロック
         private void Button_Check()
         {
             if(Reports.Count == 0)
@@ -349,6 +361,7 @@ namespace CarReportSystem
             }
         }
 
+        //わからない
         private void すべて保存ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             
