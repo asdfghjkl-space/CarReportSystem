@@ -71,8 +71,6 @@ namespace CarReportSystem
 
             //次の入力に備えて各項目をクリア
             inputItemAllClear();
-
-            Button_Check();
         }
 
         //記録者のコンボボックス入力候補
@@ -143,21 +141,12 @@ namespace CarReportSystem
         //追加済みデータの修正
         private void btModify_Click(object sender, EventArgs e)
         {
-            //CarReprot selectedCar = Reports[dgvPerson.CurrentRow.Index];
+            dgvCarReport.CurrentRow.Cells[2].Value = cbAuthor.Text;
 
-            //選択したデータの変更
-            //selectedCar.CreateDate = dateTimePicker1.Value;
-            //selectedCar.Author = cbAuthor.Text;
-            //selectedCar.Maker = GetCarMaker();
-            //selectedCar.Name = cbName.Text;
-            //selectedCar.Report = tbMemo.Text;
-            //selectedCar.Picture = pbImage.Image;
-
-            dgvCarReport.Refresh();
-
-            Button_Check();
-
-            inputItemAllClear();
+            //データベースの更新
+            this.Validate();
+            this.carReportBindingSource.EndEdit();
+            this.tableAdapterManager.UpdateAll(this.infosys202032DataSet);
         }
 
         private void btDelete2_Click(object sender, EventArgs e)
@@ -167,8 +156,6 @@ namespace CarReportSystem
             {
                 this.dgvCarReport.Rows.Remove(row);
             }
-
-            Button_Check();
         }
 
         //終了
@@ -277,25 +264,8 @@ namespace CarReportSystem
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            btModify.Enabled = false;
-            btDelete2.Enabled = false;
-        }
 
-        //ボタンのロック
-        private void Button_Check()
-        {
-            //if(Reports.Count == 0)
-            //{
-            //    btModify.Enabled = false;
-            //    btDelete2.Enabled = false;
-            //}
-            //else
-            //{
-            //    btModify.Enabled = true;
-            //    btDelete2.Enabled = true;
-            //}
         }
-
 
         private void 終了ToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -357,10 +327,10 @@ namespace CarReportSystem
 
         private void carReportBindingNavigatorSaveItem_Click(object sender, EventArgs e)
         {
+            //データベースの更新
             this.Validate();
             this.carReportBindingSource.EndEdit();
             this.tableAdapterManager.UpdateAll(this.infosys202032DataSet);
-
         }
 
         private void 接続ToolStripMenuItem_Click(object sender, EventArgs e)
@@ -374,6 +344,10 @@ namespace CarReportSystem
         {
             //選択した行のインデックスで指定した項目を取り戻す
             var maker = dgvCarReport.CurrentRow.Cells[3].Value;
+
+            //編集者
+            cbAuthor.Text = dgvCarReport.CurrentRow.Cells[2].Value.ToString();
+
             SetRadioButton((string)maker);
         }
 
