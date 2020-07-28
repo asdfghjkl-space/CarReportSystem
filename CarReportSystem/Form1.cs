@@ -143,6 +143,15 @@ namespace CarReportSystem
         {
             dgvCarReport.CurrentRow.Cells[2].Value = cbAuthor.Text;
 
+            if(pbImage.Image != null)
+            {
+                dgvCarReport.CurrentRow.Cells[6].Value = ImageToByteArray(pbImage.Image);
+            }
+            else
+            {
+                dgvCarReport.CurrentRow.Cells[6].Value = null;
+            }
+
             //データベースの更新
             this.Validate();
             this.carReportBindingSource.EndEdit();
@@ -347,6 +356,17 @@ namespace CarReportSystem
 
             //編集者
             cbAuthor.Text = dgvCarReport.CurrentRow.Cells[2].Value.ToString();
+            cbName.Text = dgvCarReport.CurrentRow.Cells[4].Value.ToString();
+            tbMemo.Text = dgvCarReport.CurrentRow.Cells[5].Value.ToString();
+
+            //if (dgvCarReport != null)
+            //{
+            //    dgvCarReport.CurrentRow.Cells[6].Value = ImageToByteArray(pbImage.Image);
+            //}
+            //else
+            //{
+            //    dgvCarReport.CurrentRow.Cells[6].Value = null;
+            //}
 
             SetRadioButton((string)maker);
         }
@@ -398,5 +418,27 @@ namespace CarReportSystem
             }
         }
 
+        //車名検索
+        private void btSearchExe_Click(object sender, EventArgs e)
+        {
+            this.carReportTableAdapter.FillByCarName(this.infosys202032DataSet.CarReport,tbSearchCarName.Text);
+        }
+
+        //日付検索
+        private void btSearchExeDate_Click(object sender, EventArgs e)
+        {
+            this.carReportTableAdapter.FillByCreatedDate(this.infosys202032DataSet.CarReport,dtpSearchDate.Value.ToString());
+        }
+
+        private void btSerchAut_Click(object sender, EventArgs e)
+        {
+            this.carReportTableAdapter.FillByAuthor(this.infosys202032DataSet.CarReport,tbSearchAuthor.Text);
+
+        }
+
+        private void btSerMa_Click(object sender, EventArgs e)
+        {
+            this.carReportTableAdapter.FillByMaker(this.infosys202032DataSet.CarReport, tbSearchMaker.Text);
+        }
     }
 }
