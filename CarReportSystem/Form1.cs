@@ -127,7 +127,7 @@ namespace CarReportSystem
         //画像のClear
         private void btDelete1_Click(object sender, EventArgs e)
         {
-            if(pbImage.Image == null)
+            if (pbImage.Image == null)
             {
                 //メッセージボックスの追加
                 MessageBox.Show("画像が存在しませんので、削除できません。");
@@ -142,8 +142,11 @@ namespace CarReportSystem
         private void btModify_Click(object sender, EventArgs e)
         {
             dgvCarReport.CurrentRow.Cells[2].Value = cbAuthor.Text;
+            dgvCarReport.CurrentRow.Cells[3].Value = GetCarMaker();
+            dgvCarReport.CurrentRow.Cells[4].Value = cbName.Text;
+            dgvCarReport.CurrentRow.Cells[5].Value = tbMemo.Text;
 
-            if(pbImage.Image != null)
+            if (pbImage.Image != null)
             {
                 dgvCarReport.CurrentRow.Cells[6].Value = ImageToByteArray(pbImage.Image);
             }
@@ -421,24 +424,26 @@ namespace CarReportSystem
         //車名検索
         private void btSearchExe_Click(object sender, EventArgs e)
         {
-            this.carReportTableAdapter.FillByCarName(this.infosys202032DataSet.CarReport,tbSearchCarName.Text);
+            //this.carReportTableAdapter.FillByCarName(this.infosys202032DataSet.CarReport, tbSearchCarName.Text);
+            this.carReportTableAdapter.FillByCreatedDate(this.infosys202032DataSet.CarReport, tbSearchCarName.Text,tbSearchMaker.Text );
+            //if (dtpSearchDate == default || tbSearchAuthor == null || tbSearchMaker == null)
+            //{
+            //    this.carReportTableAdapter.FillByCarName(this.infosys202032DataSet.CarReport, tbSearchCarName.Text);
+            //}
         }
 
         //日付検索
         private void btSearchExeDate_Click(object sender, EventArgs e)
         {
-            this.carReportTableAdapter.FillByCreatedDate(this.infosys202032DataSet.CarReport,dtpSearchDate.Value.ToString());
         }
 
         private void btSerchAut_Click(object sender, EventArgs e)
         {
-            this.carReportTableAdapter.FillByAuthor(this.infosys202032DataSet.CarReport,tbSearchAuthor.Text);
 
         }
 
         private void btSerMa_Click(object sender, EventArgs e)
         {
-            this.carReportTableAdapter.FillByMaker(this.infosys202032DataSet.CarReport, tbSearchMaker.Text);
         }
     }
 }
